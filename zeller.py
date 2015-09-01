@@ -69,6 +69,8 @@ class ZellerCongruence(object):
             raise Exception('Date %s is neither Julian nor Gregorian' % date)
         self.day_num = self.algo.execute()
 
+        assert -2 % 7 == 5
+
     def isFirstJeudi(self):
         return True if self.days_of_week[self.day_num] == 'Jeudi' else False
 
