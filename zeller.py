@@ -9,10 +9,15 @@ Usage:
 
 Options:
     --help  This help message
+
+Exit codes:
+    0: for a FirstJeudi
+    1: otherwise
 """
 
 import datetime
 from time import strptime
+from sys import exit
 
 from docopt import docopt
 
@@ -35,10 +40,12 @@ class Zeller(object):
                 print "1er janvier c'est gueule de bois reviens le 8"
             elif z.q < 8 or (z.m == 1 and z.q == 8):
                 print "First Jeudi!!!!!! 🍺 "
+                return 0
             else:
                 print "Mauvais Jeudi"
         else:
             print "Ce n'est pas un Jeudi"
+        return 1
 
 
 class ZellerCongruence(object):
@@ -119,4 +126,4 @@ class Julian(ZellerCongruence):
 if __name__ == '__main__':
     args = docopt(__doc__)
     z = Zeller()
-    z.main(args['<YYYYmmdd>'])
+    exit(z.main(args['<YYYYmmdd>']))
