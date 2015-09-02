@@ -26,13 +26,17 @@ class Zeller(object):
 
     date = None
 
+    @staticmethod
+    def parse_date(string):
+        parsed = strptime(string, '%Y%m%d')
+        return datetime.date(parsed.tm_year, parsed.tm_mon,
+                             parsed.tm_mday)
+
     def main(self, input_date):
         if input_date is None:
             date = datetime.date.today()
         else:
-            parsed = strptime(input_date, '%Y%m%d')
-            date = datetime.date(parsed.tm_year, parsed.tm_mon,
-                                 parsed.tm_mday)
+            date = self.parse_date(input_date)
         z = ZellerCongruence(date)
 
         if z.isJeudi():
