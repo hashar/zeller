@@ -98,14 +98,19 @@ class ZellerCongruence(object):
         # January -> 13
         if date.month == 1:
             algo.m = 13
-        # Febuary -> 14
+        # February -> 14
         elif date.month == 2:
             algo.m = 14
         else:
             algo.m = date.month
 
-        algo.K = date.year % 100
-        algo.J = date.year / 100
+        if algo.m > 12:
+            year = date.year - 1
+        else:
+            year = date.year
+
+        algo.K = year % 100
+        algo.J = year / 100
         return algo
 
     def execute(self):
