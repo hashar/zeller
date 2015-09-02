@@ -90,6 +90,9 @@ class ZellerCongruence(object):
     def isJeudi(self):
         return True if self.days_of_week[self.day_num] == 'Jeudi' else False
 
+    def getName(self):
+        return self.days_of_week[self.day_num]
+
     @classmethod
     def fromdate(cls, date):
         algo = cls()
