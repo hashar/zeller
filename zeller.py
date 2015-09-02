@@ -54,7 +54,7 @@ class Zeller(object):
 
 class ZellerCongruence(object):
 
-    julian_end = datetime.date(1582, 10, 4) - datetime.timedelta(seconds=1)
+    julian_end = datetime.date(1582, 10, 4)
     gregorian_start = datetime.date(1582, 10, 15)
 
     """day of the month"""
