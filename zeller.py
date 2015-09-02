@@ -30,10 +30,15 @@ class Zeller(object):
                                  parsed.tm_mday)
         z = ZellerCongruence(date)
 
-        if z.isFirstJeudi():
-            print "First Jeudi!!!!!! 🍺 "
+        if z.isJeudi():
+            if z.m == 1 and z.q == 1:
+                print "1er janvier c'est gueule de bois reviens le 8"
+            elif z.q < 8 or (z.m == 1 and z.q == 8):
+                print "First Jeudi!!!!!! 🍺 "
+            else:
+                print "Mauvais Jeudi"
         else:
-            print "Rien à La Perle..."
+            print "Ce n'est pas un Jeudi"
 
 
 class ZellerCongruence(object):
@@ -71,7 +76,7 @@ class ZellerCongruence(object):
 
         assert -2 % 7 == 5
 
-    def isFirstJeudi(self):
+    def isJeudi(self):
         return True if self.days_of_week[self.day_num] == 'Jeudi' else False
 
     @classmethod
