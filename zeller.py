@@ -40,9 +40,9 @@ class Zeller(object):
         z = ZellerCongruence(date)
 
         if z.isJeudi():
-            if z.m == 1 and z.q == 1:
+            if z.algo.m == 13 and z.algo.q == 1:
                 print "1er janvier c'est gueule de bois reviens le 8"
-            elif z.q < 8 or (z.m == 1 and z.q == 8):
+            elif z.algo.q < 8 or (z.algo.m == 13 and z.algo.q == 8):
                 print "First Jeudi!!!!!! 🍺 "
                 return 0
             else:
@@ -57,9 +57,9 @@ class ZellerCongruence(object):
     julian_end = datetime.date(1582, 10, 4)
     gregorian_start = datetime.date(1582, 10, 15)
 
-    """day of the month"""
+    """Day of the month"""
     q = None
-    """month"""
+    """Month (3: march to 14: february)"""
     m = None
     """year of century"""
     K = None
