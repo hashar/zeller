@@ -48,7 +48,7 @@ class Zeller(object):
             else:
                 print "Mauvais Jeudi"
         else:
-            print "Ce n'est pas un Jeudi"
+            print "Ce n'est pas un Jeudi mais un %s" % z.getName()
         return 1
 
 
