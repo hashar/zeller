@@ -2,7 +2,8 @@
 # coding: utf8
 
 import unittest
-import datetime 
+import datetime
+import sys
 
 import zeller
 
@@ -129,6 +130,31 @@ class TestZellerCongruence(unittest.TestCase):
     def test_inter_gravissimas_first_gregorian_is_friday(self):
         self.assertEquals('Vendredi', congruence('15821015').getName())
 
+
+class TestZellerCommand(unittest.TestCase):
+
+    def test_today(self):
+        self.assertEquals(0, zeller.Zeller().main('20150903'))
+        out = sys.stdout.getvalue().strip()
+        self.assertEquals(out, 'First Jeudi!!!!!! 🍺')
+
+    def test_next_jeudi(self):
+        self.assertEquals(1, zeller.Zeller().main('20150910'))
+        out = sys.stdout.getvalue().strip()
+        self.assertEquals(out, 'Mauvais Jeudi')
+
+    def test_january_first(self):
+        self.assertEquals(1, zeller.Zeller().main('20150101'))
+        out = sys.stdout.getvalue().strip()
+        self.assertEquals(out,
+                          '1er janvier c\'est gueule de bois reviens le 8')
+
+    def test_january_postponed(self):
+        self.assertEquals(0, zeller.Zeller().main('20150108'))
+        out = sys.stdout.getvalue().strip()
+        self.assertEquals(out, 'First Jeudi!!!!!! 🍺')
+
+
 if __name__ == '__main__':
     print "testing"
-    unittest.main()
+    unittest.main(buffer=True)
