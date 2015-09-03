@@ -18,4 +18,4 @@ examples: $(EXAMPLES)
 
 
 paused: PAUSED = @$(shell read unused;)
-paused: test examples
+paused: examples
