@@ -4,11 +4,13 @@
 Zeller congruence
 
 Usage:
-    zeller.py
-    zeller.py <YYYYmmdd>
+    zeller.py [--country CODE]
+    zeller.py [--country CODE] <YYYYmmdd>
 
 Options:
-    --help  This help message
+    --help     This help message
+    --country CODE  Country code to determine switch from Julian to
+                    Gregorian. Default: Papal States
 
 Exit codes:
     0: for a FirstJeudi
@@ -25,6 +27,10 @@ from docopt import docopt
 class Zeller(object):
 
     date = None
+    country = None
+
+    def __init__(self, country=None):
+        self.country = country
 
     @staticmethod
     def parse_date(string):
@@ -37,7 +43,8 @@ class Zeller(object):
             date = datetime.date.today()
         else:
             date = self.parse_date(input_date)
-        z = ZellerCongruence(date)
+
+        z = ZellerCongruence(date, *CalLimits.forCountry(self.country))
 
         if z.isJeudi():
             if z.algo.m == 13 and z.algo.q == 1:
@@ -53,9 +60,6 @@ class Zeller(object):
 
 
 class ZellerCongruence(object):
-
-    julian_end = datetime.date(1582, 10, 4)
-    gregorian_start = datetime.date(1582, 10, 15)
 
     """Day of the month"""
     q = None
@@ -76,7 +80,10 @@ class ZellerCongruence(object):
         'Vendredi',
     )
 
-    def __init__(self, date):
+    def __init__(self, date, julian_end=None, gregorian_start=None):
+        self.julian_end = julian_end or datetime.date(1582, 10, 4)
+        self.gregorian_start = gregorian_start or datetime.date(1582, 10, 15)
+
         if date <= self.julian_end:
             self.algo = Julian.fromdate(date)
         elif date >= self.gregorian_start:
@@ -126,6 +133,32 @@ class ZellerCongruence(object):
         raise NotImplemented()
 
 
+class CalLimits(object):
+
+    # Adjustement length depends on the century
+    country_dates = {
+        # XXX
+        # Alsace: 1648
+        # Strasbourg: 1682
+        # Lorraine: 1582-1735 (yeah they have been slow)
+        'fr': ((1582, 12, 9), (1582, 12, 20)),
+        'uk': ((1752, 9, 2), (1752, 9, 14)),
+        'ie': ((1752, 9, 2), (1752, 9, 14)),
+    }
+
+    default_julian_end = (1582, 10, 4)
+    default_gregorian_start = (1582, 10, 15)
+
+    @staticmethod
+    def forCountry(country=None):
+        limits = CalLimits.country_dates.get(
+            country,
+            (CalLimits.default_julian_end,
+             CalLimits.default_gregorian_start)
+        )
+        return [datetime.date(*d) for d in limits]
+
+
 class Gregorian(ZellerCongruence):
 
     def __init__(self):
@@ -146,5 +179,6 @@ class Julian(ZellerCongruence):
 
 if __name__ == '__main__':
     args = docopt(__doc__)
-    z = Zeller()
+    z = Zeller(country=args['--country'])
+
     exit(z.main(args['<YYYYmmdd>']))

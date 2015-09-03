@@ -154,6 +154,17 @@ class TestZellerCommand(unittest.TestCase):
         out = sys.stdout.getvalue().strip()
         self.assertEquals(out, 'First Jeudi!!!!!! 🍺')
 
+    def test_uk_today(self):
+        self.assertEquals(0, zeller.Zeller(country='uk').main('20150903'))
+        out = sys.stdout.getvalue().strip()
+        self.assertEquals(out, 'First Jeudi!!!!!! 🍺')
+
+    def test_uk_weird(self):
+        self.assertEquals(0, zeller.Zeller(country='uk').main('17520914'),
+                          msg="Should recognize weird First Jeudi")
+        out = sys.stdout.getvalue().strip()
+        self.assertEquals(out, 'First Jeudi!!!!!! 🍺')
+
 
 if __name__ == '__main__':
     print "testing"
